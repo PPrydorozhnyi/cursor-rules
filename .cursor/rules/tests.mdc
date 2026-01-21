@@ -1,0 +1,42 @@
+---
+description: Testing guideline
+globs: ["**/src/test/java/**/*.java"]
+alwaysApply: false
+---
+
+# AI Code Generation Guardrails
+
+> Testing guideline
+
+## Testing Mindset
+
+### Test basics
+- When asserting use test input params/models as the source, not constants
+- Prefer assertions of input and output models rather than param to target model
+
+### Test What Matters
+- Critical paths: auth, validations, data mutation
+- Edge cases and error conditions
+- Integration points
+
+### Integration tests
+- All tests MUST be isolated and independent
+- Each test should not depend on the state from other tests
+- Use `@BeforeEach` to reset mocks and clear state like recreate topic or cleanup DB table
+- If there is audit then verify that they're in place. for example, createdAt and updatedAt are present after creation.
+CreatedAt stayed the same but updatedAt was changed after update
+
+### Parameterized Tests
+- Tests SHOULD be written parameterized when possible
+- Use `@ParameterizedTest` with `@MethodSource` for complex scenarios. Write descriptive name as first parameter and put
+ it in name like @ParameterizedTest(name = "{0}")
+
+### Required Containers
+ - **PostgreSQLContainer** - Database testing
+ - **RedisContainer** - Cache testing (if needed)
+ - **KafkaContainer** - Message broker testing
+ - **MockServerContainer** - External API mocking
+
+### Container Management
+ - Containers are started once and reused (singleton pattern)
+ - Use `@DynamicPropertySource` to override Spring properties
