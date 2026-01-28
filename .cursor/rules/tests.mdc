@@ -18,6 +18,7 @@ alwaysApply: false
 - Critical paths: auth, validations, data mutation
 - Edge cases and error conditions
 - Integration points
+- Test name convention {methodName}_{WhatCaseWeAreChecking}_{ExpectedResult} with the same capitalization
 
 ### Integration tests
 - All tests MUST be isolated and independent
