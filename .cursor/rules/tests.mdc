@@ -27,6 +27,8 @@ should be capitalized
 - Use `@BeforeEach` to reset mocks and clear state like recreate topic or cleanup DB table
 - If there is audit then verify that they're in place. for example, createdAt and updatedAt are present after creation.
 CreatedAt stayed the same but updatedAt was changed after update
+- No mocking services, repositories, etc. Use real beans and testcontainers. Mocking is allowed only for external HTTP
+calls
 
 ### Parameterized Tests
 - Tests SHOULD be written parameterized when possible
