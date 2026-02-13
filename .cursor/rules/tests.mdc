@@ -29,6 +29,7 @@ should be capitalized
 CreatedAt stayed the same but updatedAt was changed after update
 - No mocking services, repositories, etc. Use real beans and testcontainers. Mocking is allowed only for external HTTP
 calls
+- For assertions you must use org.junit.jupiter.api.Assertions
 
 ### Parameterized Tests
 - Tests SHOULD be written parameterized when possible
