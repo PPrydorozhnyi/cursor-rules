@@ -18,8 +18,12 @@ alwaysApply: false
 - Critical paths: auth, validations, data mutation
 - Edge cases and error conditions
 - Integration points
+
+### Test Must Have
 - Test name convention {methodName}_{WhatCaseWeAreChecking}_{ExpectedResult}. {WhatCaseWeAreChecking and {ExpectedResult}
 should be capitalized
+- Use random values when possible from ThreadLocalRandom/EnhancedRandom/Instancio/other randomization tool that is used
+in the project
 
 ### Integration tests
 - All tests MUST be isolated and independent
