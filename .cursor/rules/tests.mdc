@@ -39,6 +39,8 @@ calls
 - Tests SHOULD be written parameterized when possible
 - Use `@ParameterizedTest` with `@MethodSource` for complex scenarios. Write descriptive name as first parameter and put
  it in name like @ParameterizedTest(name = "{0}")
+- If there multiple parametrized tests which are using the same method source then reuse this method source. If those
+tests are in different classes then move data for method source to abstract parent class
 
 ### Required Containers
  - **PostgreSQLContainer** - Database testing
