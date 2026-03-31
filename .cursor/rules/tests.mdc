@@ -55,7 +55,11 @@ private static AssertionFailedError buildFailure(
 - Each test should not depend on the state from other tests
 - Use `@BeforeEach` to reset mocks and clear state like recreate topic or cleanup DB table
 - If there is audit then verify that they're in place. for example, createdAt and updatedAt are present after creation.
-CreatedAt stayed the same but updatedAt was changed after update
+CreatedAt stayed the same but updatedAt was changed after update. To check that updatedAt was changed correctly use
+```java
+org.assertj.core.api.Assertions.assertThat(savedBonusTemplateAuditEntity.getModifiedAt())
+                .isCloseTo(savedBonusTemplateEntity.getModifiedAt(), within(1, ChronoUnit.MILLIS));
+```
 - No mocking services, repositories, etc. Use real beans and testcontainers. Mocking is allowed only for external HTTP
 calls
 - For assertions you must use org.junit.jupiter.api.Assertions
