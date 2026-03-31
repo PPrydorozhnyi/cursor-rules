@@ -24,6 +24,31 @@ alwaysApply: false
 should be capitalized
 - Use random values when possible from ThreadLocalRandom/EnhancedRandom/Instancio/other randomization tool that is used
 in the project
+- Comparison of BigDecimals should be done with `BigDecimal.compareTo(BigDecimal)`. You need to find
+`assertBigDecimalEquals` in the code base or use the following code snippet
+
+```java
+public static void assertBigDecimalEquals(@Nullable BigDecimal first, @Nullable BigDecimal second) {
+    final String errorMessage = "BigDecimals are not equal. Expected %s. Actual %s".formatted(first, second);
+    if ((first == null) != (second == null)) {
+        throw buildFailure(first, second, errorMessage);
+    }
+    if (first == null) {
+        return;
+    }
+
+    Assertions.assertEquals(0, first.compareTo(second), errorMessage);
+}
+
+private static AssertionFailedError buildFailure(
+        @Nullable BigDecimal first, @Nullable BigDecimal second, String errorMessage) {
+    return assertionFailure()
+            .message(errorMessage)
+            .expected(first)
+            .actual(second)
+            .build();
+}
+```
 
 ### Integration tests
 - All tests MUST be isolated and independent

@@ -26,6 +26,14 @@ alwaysApply: true
 ### Functions
 - Single responsibility: one function does one thing
 
+## Correctness
+
+### Use Types
+- BigDecimal should be used for money
+- Instant or LocalDateTime for dates
+- Use enums for constants
+- Prefer enums over string literals or boolean values
+
 ## Complexity Control
 
 ### Keep It Flat
