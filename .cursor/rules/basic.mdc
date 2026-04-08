@@ -6,48 +6,56 @@ alwaysApply: true
 
 # AI Code Generation Guardrails
 
-> Rules to prevent AI from generating unmaintainable code.
+> Rules to prevent AI from generating unmaintainable Java code.
 
 ## Code Organization
 
 ### File Structure
-- One component/class/module per file
-- File name matches the primary export
+- One top-level class/record/enum per file. Nested inner classes are fine when they are private implementation details and not used as field types in other classes
 - Group by feature/domain, not by type
 - Max 300 lines per file (split if larger)
 
 ### Naming
 - Descriptive names over abbreviations (`getUserById` not `getUsr`)
+- Never name variables, fields, or parameters with identifiers that shadow or resemble Java keywords or common type names: `record`, `return`, `class`, `value`, `object`, `string`, `list`. Use domain-qualified names instead (e.g., `bonusRecord`, `returnAmount`, `resultList`)
 - Boolean variables start with `is`, `has`, `can`, `should`
-- Functions describe actions: `calculateTotal`, `validateEmail`
+- Methods describe actions: `calculateTotal`, `validateEmail`
 - Constants in UPPER_SNAKE_CASE
-- Unused parameters/variables should be prefixed with '_'
+- Prefix unused parameters and variables with `_` (ErrorProne-compatible, e.g., `_testName`)
+- Java 22+: use the unnamed variable `_` (JEP 456) when the project upgrades past Java 21
 
-### Functions
-- Single responsibility: one function does one thing
+### Methods
+- Single responsibility: one method does one thing
 
 ## Correctness
 
-### Use Types
-- BigDecimal should be used for money
-- Instant or LocalDateTime for dates
-- Use enums for constants
-- Prefer enums over string literals or boolean values
+### Types and Precision
+- `BigDecimal` for **all** monetary amounts and financial calculations -- no exceptions
+- Never call `.doubleValue()`, `.floatValue()`, or `.toDouble()` on monetary BigDecimals
+- When external APIs provide `double` (e.g., Avro), convert to `BigDecimal` at the boundary immediately via `BigDecimal.valueOf()`; do not propagate `double` through business logic
+- Use `BigDecimal` comparison via `.compareTo()`, never `.equals()` (scale-sensitive)
+- `Instant` or `LocalDateTime` for dates
+- Use enums for fixed sets of values
+- Prefer enums over string literals or boolean flags
 
 ## Complexity Control
 
 ### Keep It Flat
 - Max 3 levels of nesting
-- Max 15 cyclomatic complexity per function
+- Max 15 cyclomatic complexity per method
 - No nested ternaries
 - Long boolean expressions → extract to named variable
 
-### No Duplication
-- Copy-paste = extract to function
+### No Duplication (DRY)
+- Copy-paste = extract to method
 - Similar code in 2+ classes/files → shared utility
 - Config values in one place
+- When the same sequence of operations appears 2+ times, extract it into a named helper method
+- This applies to any repeated pattern: stream/filter/map pipelines, builder chains, validation sequences, mapping logic, repository lookups with error handling
+- The extracted method name should describe the **intent**, not the mechanics (e.g., `findActiveBonusByIdOrThrow()` not `findAndCheck()`)
+- Prefer small, focused methods over inline lambdas when the logic is reused
 
-## Testing Mindset
+## Testability
 
 ### Write Testable Code
 - Pure functions where possible
@@ -55,13 +63,13 @@ alwaysApply: true
 - Small, focused units
 - Avoid side effects in business logic
 
-## Architecture Basics
+## Architecture
 
 ### Separation of Concerns
-- Entry points handle I/O only (routing, request/response)
-- Business logic in dedicated modules
+- Controllers/listeners handle I/O only (routing, request/response, deserialization)
+- Business logic in dedicated services
 - Data access separate from business logic
-- Dependencies flow one direction (entry → logic → data)
+- Dependencies flow one direction (controller → service → repository)
 
 ## Documentation
 
@@ -74,7 +82,7 @@ alwaysApply: true
 ### Self-Documenting Code
 - Prefer clear names over comments
 - Extract magic numbers to named constants
-- Use types/interfaces as documentation
+- Use records and sealed types to encode invariants
 
 ## Error Handling
 
@@ -104,5 +112,4 @@ alwaysApply: true
 
 ## Logging
 
-- Use structured arguments like StructuredArguments.kv(BET_REFERENCE, betReference) or use Kv.betReference(betReference)
-/LoggingUtils.Structured.betReference(betReference) if such are used in project
+- Use structured arguments like `StructuredArguments.kv(BET_REFERENCE, betReference)` or use `Kv.betReference(betReference)` / `LoggingUtils.Structured.betReference(betReference)` if such are used in project
