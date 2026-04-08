@@ -26,6 +26,7 @@ alwaysApply: true
 
 ### Methods
 - Single responsibility: one method does one thing
+- Prefer method references over lambdas when possible (e.g., `Bonus::getId` not `b -> b.getId()`)
 
 ## Correctness
 
