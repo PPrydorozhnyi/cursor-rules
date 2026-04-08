@@ -78,7 +78,7 @@ alwaysApply: true
 - WHY, not WHAT (code shows what, comments explain why)
 - Complex algorithms get explanations
 - Non-obvious business rules documented
-- TODO format: `// TODO(username): description`
+- TODO format: `// TODO(username): description with ticket number/link`
 
 ### Self-Documenting Code
 - Prefer clear names over comments
