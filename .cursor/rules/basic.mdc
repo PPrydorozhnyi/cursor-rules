@@ -97,6 +97,7 @@ alwaysApply: true
 - Validate inputs at boundaries
 - Return early on invalid state
 - Use assertions for "should never happen"
+- `@SneakyThrows` is prohibited in production code (handle or declare checked exceptions explicitly). Acceptable in tests only
 
 ## Consistency
 
