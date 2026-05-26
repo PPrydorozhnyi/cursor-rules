@@ -116,3 +116,8 @@ assertThat(updated.getModifiedAt()).isCloseTo(Instant.now(), within(5, ChronoUni
 This way, when a new enum value is added to the codebase, the test automatically exercises it instead of silently skipping it.
 
 - If multiple parameterized tests share the same method source, reuse it. If those tests are in different classes, move the data provider to an abstract parent class
+
+## Test Verification
+- Use patten like ./gradlew clean test to run all tests
+- Use pattern like ./gradlew test --tests 'com.delasport.bonus.wagering.service.service.impl.PendingBetsCleanUpJobImplIntegrationTest.cleanupBetsInPlacementPendingStatus_ExpiredPendingBets_ShouldFailAndRefundAllocatedBalance' -x jacocoTestReport -x jacocoTestCoverageVerification  to run a specific
+test or subset of tests
